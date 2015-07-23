@@ -24,6 +24,15 @@ JSX.math.random.randInt = function(min, max) {
 }
 
 /*
+* Creates random number between 0 and 1 following 'power law distribution
+* the higher the power, the more the distribution is skewed towards 0
+*/
+JSX.math.random.powLawRandInt = function(pow){
+	pow = (typeof pow === 'number') ? pow : 2;
+	return Math.pow(Math.random(), pow);
+}
+
+/*
 * Tests if a number is the square root of an integer
 */
 JSX.math.isSquareOfInteger = function(num){
