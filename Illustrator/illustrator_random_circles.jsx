@@ -1,3 +1,4 @@
+#include lib/index.jsx
 /*
 * Creates random circles
 */
@@ -7,7 +8,7 @@ var artLayer = doc.activeLayer;
 
 function createRandomEllipse(maxRadius){
 	maxRadius = maxRadius || 72;
-	var r = powLawRandomNumber() * maxRadius;
+	var r = JSX.math.random.powLawRandInt(3) * maxRadius;
 	//units are in points- y, x, f1, f2
 	//y is from top of document, x is from left
 	var ellipse = doc.pathItems.ellipse(doc.height * Math.random() * -1, doc.width * Math.random(), r, r);
@@ -18,17 +19,11 @@ function createRandomEllipse(maxRadius){
 	newColor.blue = Math.random() * 255;
 
 	ellipse.fillColor = newColor;
-	ellipse.stroked = false;	
+	ellipse.stroked = false;
 }
 
-/*
-* Creates random number between 0 and 1 following 'power law distribution
-* the higher the power, the more the distribution is skewed towards 0
-*/
-function powLawRandomNumber(){
-	return Math.pow(Math.random(), 4);
-}
-
+var smallestDimen = doc.height < doc.width ? doc.height : doc.width;
+var maxRadius = Math.floor(smallestDimen / 20);
 for (var i = 0; i < 1000; i++) {
-	createRandomEllipse(72);
+	createRandomEllipse(maxRadius);
 };
