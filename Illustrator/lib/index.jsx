@@ -5,3 +5,4 @@
 var JSX = {};
 #include math.jsx
 #include color.jsx
+#include vector.jsx

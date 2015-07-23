@@ -78,13 +78,12 @@ function createRandomPointsArrayFromGrid(minLength, maxLength){
 	for (var i = 0; i < sides; i++) {
 		do{
 			var point = JSX.math.random.randElement(gridPointsArray);
-		}while(isPointInArray(point, pointsArray));
+		}while(JSX.vector.isPointInArray(point, pointsArray));
 		pointsArray.push(point);
 	};
 
 	return pointsArray;
 }
-
 
 /**
  * Used to add points to grid points array to keep track of all the grid vertices(points) on artboard
@@ -93,18 +92,6 @@ function createRandomPointsArrayFromGrid(minLength, maxLength){
  	for (var i = 0; i < pointsArray.length; i++) {
 	 	gridPointsArray.push(pointsArray[i]);
  	};
- }
-
-/**
- * Tests if a point [x,y] is in an array of points
- */
- function isPointInArray(point, pointsArray){
- 	for (var i = 0; i < pointsArray.length; i++) {
- 		if ((pointsArray[i][0] === point[0]) && (pointsArray[i][1] === point[1])) {
- 			return true;
- 		};
- 	};
- 	return false;
  }
 
 /**
