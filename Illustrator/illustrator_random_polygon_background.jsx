@@ -1,4 +1,4 @@
-#include lib/color.jsx
+#include lib/index.jsx
 /*
 * Creates a fill of random polygons inside artboard
 * Sizing doesn't work correctly on new artboard for some reason
@@ -13,7 +13,7 @@ function createGridSquares(numSquares){
 	numSquares = numSquares ? numSquares : 4;
 	var numCols;
 	var numRows;
-	if(isSquareOfInteger(numSquares)){
+	if(JSX.math.isSquareOfInteger(numSquares)){
 		var square = Math.sqrt(numSquares);
 		numCols = square;
 		numRows = square;
@@ -37,13 +37,6 @@ function createGridSquares(numSquares){
 }
 
 /*
-* Tests if a number is the square root of an integer
-*/
-function isSquareOfInteger(num){
-	return Math.sqrt(num) % 1 === 0;
-}
-
-/*
 * Creates a polygon based on array on points
 * e.g. pointsArray = [[1, 2],[2,4 ],[5, 5]]; where [x, y]
 */
@@ -63,7 +56,7 @@ function createPolygon(pointsArray){
 function createRandomPointsArray(minLength, maxLength){
 	minLength = minLength ? minLength : 3;
 	maxLength = maxLength ? maxLength : 5;
-	var sides = getRandInt(minLength, maxLength);
+	var sides = JSX.math.random.randInt(minLength, maxLength);
 	var pointsArray = [];
 	for (var i = 0; i < sides; i++) {
 		pointsArray.push([doc.width * Math.random(), doc.height * Math.random() * -1]);
@@ -80,11 +73,11 @@ function createRandomPointsArray(minLength, maxLength){
 function createRandomPointsArrayFromGrid(minLength, maxLength){
 	minLength = minLength ? minLength : 3;
 	maxLength = maxLength ? maxLength : 5;
-	var sides = getRandInt(minLength, maxLength);
+	var sides = JSX.math.random.randInt(minLength, maxLength);
 	var pointsArray = [];
 	for (var i = 0; i < sides; i++) {
 		do{
-			var point = randElementFromArray(gridPointsArray);
+			var point = JSX.math.random.randElement(gridPointsArray);
 		}while(isPointInArray(point, pointsArray));
 		pointsArray.push(point);
 	};
@@ -92,19 +85,6 @@ function createRandomPointsArrayFromGrid(minLength, maxLength){
 	return pointsArray;
 }
 
-/**
- * Returns a random integer between min (inclusive) and max (inclusive)
- * Using Math.round() will give you a non-uniform distribution!
- * Courtesy of MDN
- */
-function getRandInt(min, max) {
-	//sets default min to 0 if not specified
-	if(!max && max !== 0){
-		max = min;
-		min = 0;
-	}
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 /**
  * Used to add points to grid points array to keep track of all the grid vertices(points) on artboard
@@ -113,10 +93,6 @@ function getRandInt(min, max) {
  	for (var i = 0; i < pointsArray.length; i++) {
 	 	gridPointsArray.push(pointsArray[i]);
  	};
- }
-
- function randElementFromArray(lvArray){
- 	return lvArray[Math.floor(Math.random() * lvArray.length)];
  }
 
 /**

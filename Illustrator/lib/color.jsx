@@ -30,8 +30,8 @@ JSX.color.Color.prototype.randColor = function(){
 * if either of the values are not provided they will be assigned randomly
 */
 JSX.color.MonochromaticColor = function(hueName, hueValue){
-	this.hueName = hueName ? hueName : randElementFromArray(this.hueNames);
-	this.hueValue = (hueValue || hueValue===0 ) ? hueValue : getRandInt(0, 255);
+	this.hueName = hueName ? hueName : JSX.math.random.randElement(this.hueNames);
+	this.hueValue = (hueValue || hueValue===0 ) ? hueValue : JSX.math.random.randInt(0, 255);
 };
 JSX.color.MonochromaticColor.prototype.hueNames = ['red', 'green', 'blue'];
 
@@ -52,7 +52,7 @@ JSX.color.MonochromaticColor.prototype.colorFromBrightness = function(brightness
 	return color;
 };
 JSX.color.MonochromaticColor.prototype.randColor = function() {
-	return this.colorFromBrightness(getRandInt(0, 255));
+	return this.colorFromBrightness(JSX.math.random.randInt(0, 255));
 };
 
 /**
@@ -75,5 +75,5 @@ JSX.color.Palette = function(palette){
 	}
 }
 JSX.color.Palette.prototype.randColor = function() {
-	return randElementFromArray(this.palette).randColor();
+	return JSX.math.random.randElement(this.palette).randColor();
 };
