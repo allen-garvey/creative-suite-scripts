@@ -1,16 +1,21 @@
 /*
 * Color functions
 */
-function randGreyScaleColor(){
+var JSX = JSX || {};
+JSX.color = {};
+
+JSX.color.GreyscaleColor = function(){};
+JSX.color.GreyscaleColor.prototype.randColor = function() {
 	var value = Math.random() * 255;
 	var randColor = new RGBColor();
 	randColor.red = value;
 	randColor.green = value;
 	randColor.blue = value;
 	return randColor;
-}
+};
 
-function randColor(){
+JSX.color.Color = function(){};
+JSX.color.Color.prototype.randColor = function(){
 	var randColor = new RGBColor();
 	randColor.red = Math.random() * 255;
 	randColor.green = Math.random() * 255;
@@ -24,17 +29,17 @@ function randColor(){
 * hueValue is int 0-255
 * if either of the values are not provided they will be assigned randomly
 */
-function MonochromaticColor(hueName, hueValue){
+JSX.color.MonochromaticColor = function(hueName, hueValue){
 	this.hueName = hueName ? hueName : randElementFromArray(this.hueNames);
 	this.hueValue = (hueValue || hueValue===0 ) ? hueValue : getRandInt(0, 255);
-}
-MonochromaticColor.prototype.hueNames = ['red', 'green', 'blue'];
+};
+JSX.color.MonochromaticColor.prototype.hueNames = ['red', 'green', 'blue'];
 
 /**
 * Returns monochromatic color based on base hue color picked on class construction
 * brightness is int 0-255
 */
-MonochromaticColor.prototype.colorFromBrightness = function(brightness) {
+JSX.color.MonochromaticColor.prototype.colorFromBrightness = function(brightness) {
 	var color = new RGBColor();
 	for (var i = 0; i < this.hueNames.length; i++) {
 		if(this.hueNames[i] === this.hueName){
@@ -46,7 +51,7 @@ MonochromaticColor.prototype.colorFromBrightness = function(brightness) {
 	};
 	return color;
 };
-MonochromaticColor.prototype.randMonochromaticColor = function() {
+JSX.color.MonochromaticColor.prototype.randColor = function() {
 	return this.colorFromBrightness(getRandInt(0, 255));
 };
 
@@ -57,7 +62,7 @@ MonochromaticColor.prototype.randMonochromaticColor = function() {
 * or an int of the length of the array of monochromatic colors that should be generated randomly
 * with no palette give a palette of 3 random monochromatic colors will be created
 */
-function Palette(palette){
+JSX.color.Palette = function(palette){
 	if(Object.prototype.toString.call(palette) === '[object Array]'){
 		this.palette = palette;
 	}
@@ -65,10 +70,10 @@ function Palette(palette){
 		var paletteLen = palette ? palette : 3;
 		this.palette = [];
 		for (var i = 0; i < paletteLen; i++) {
-			this.palette.push(new MonochromaticColor());
+			this.palette.push(new JSX.color.MonochromaticColor());
 		};
 	}
 }
-Palette.prototype.randPaletteColor = function() {
-	return randElementFromArray(this.palette).randMonochromaticColor();
+JSX.color.Palette.prototype.randColor = function() {
+	return randElementFromArray(this.palette).randColor();
 };

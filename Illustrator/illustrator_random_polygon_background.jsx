@@ -139,8 +139,8 @@ function getRandInt(min, max) {
 var gridPointsArray = [];
 //used to set the fill color of all the polygons created in this script
 //should return a color object
-var palette = new Palette();
-var colorFunc = function(){return palette.randPaletteColor();};
+var masterColor = new JSX.color.Palette();
+var colorFunc = function(){return masterColor.randColor();};
 var squaresInGrid = 16;
 var numSeedPolygons = 16;
 var numGridPolygons = 2000;
