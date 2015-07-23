@@ -1,29 +1,10 @@
+#include lib/color.jsx
 /*
 * Creates a fill of random polygons inside artboard
 * Sizing doesn't work correctly on new artboard for some reason
 */
 //creates new document if not already open
 var doc = app.documents.length > 0 ? app.activeDocument : app.documents.add(DocumentColorSpace.RGB, 512, 512);
-
-/*
-* Color functions
-*/
-function randGreyScaleColor(){
-	var value = Math.random() * 255;
-	var randColor = new RGBColor();
-	randColor.red = value;
-	randColor.green = value;
-	randColor.blue = value;
-	return randColor;
-}
-
-function randColor(){
-	var randColor = new RGBColor();
-	randColor.red = Math.random() * 255;
-	randColor.green = Math.random() * 255;
-	randColor.blue = Math.random() * 255;
-	return randColor;
-}
 
 /*
 * Covers the artboard in squares like a grid based on the integer number specified
@@ -158,7 +139,8 @@ function getRandInt(min, max) {
 var gridPointsArray = [];
 //used to set the fill color of all the polygons created in this script
 //should return a color object
-var colorFunc = function(){return randGreyScaleColor();};
+var palette = new Palette();
+var colorFunc = function(){return palette.randPaletteColor();};
 var squaresInGrid = 16;
 var numSeedPolygons = 16;
 var numGridPolygons = 2000;
@@ -167,12 +149,12 @@ function main(){
 	createGridSquares(squaresInGrid);
 	//creates 'seed' random polygons so that the polygon background fill doesn't look too regular
 	for (var i = 0; i < numSeedPolygons; i++) {
-		var randPointsArray = createRandomPointsArray();
+		var randPointsArray = createRandomPointsArray(3, 6);
 		addPointsArrayToGridPointsArray(randPointsArray);
 		createPolygon(randPointsArray);
 	};
 	for (var i = 0; i < numGridPolygons; i++) {
-		createPolygon(createRandomPointsArrayFromGrid());
+		createPolygon(createRandomPointsArrayFromGrid(3, 6));
 	};
 }
 
