@@ -9,21 +9,16 @@ var artLayer = doc.activeLayer;
 function createRandomEllipse(maxRadius){
 	maxRadius = maxRadius || 72;
 	var r = JSX.math.random.powLawRandInt(3) * maxRadius;
-	//units are in points- y, x, f1, f2
+	//units are in points- y, x, width, height
 	//y is from top of document, x is from left
 	var ellipse = doc.pathItems.ellipse(doc.height * Math.random() * -1, doc.width * Math.random(), r, r);
-
-	var newColor = new RGBColor();
-	newColor.red = Math.random() * 255;
-	newColor.green = Math.random() * 255;
-	newColor.blue = Math.random() * 255;
-
-	ellipse.fillColor = newColor;
+	ellipse.fillColor = color.getColor();
 	ellipse.stroked = false;
 }
 
 var smallestDimen = doc.height < doc.width ? doc.height : doc.width;
 var maxRadius = Math.floor(smallestDimen / 20);
+var color = new JSX.color.Color();
 for (var i = 0; i < 1000; i++) {
 	createRandomEllipse(maxRadius);
 };

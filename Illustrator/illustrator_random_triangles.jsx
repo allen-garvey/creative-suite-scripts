@@ -18,7 +18,7 @@ function createRandomTriangle(){
 						[doc.width * Math.random(), doc.height * Math.random() * -1]
 						]);
 
-	line.fillColor = color.randColor();
+	line.fillColor = color.getColor();
 }
 
 for (var i = 0; i < triangleAmount; i++) {

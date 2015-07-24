@@ -103,10 +103,10 @@ var gridPointsArray = [];
 //used to set the fill color of all the polygons created in this script
 //should return a color object
 var masterColor = new JSX.color.Palette();
-var colorFunc = function(){return masterColor.randColor();};
+var colorFunc = function(){return masterColor.getColor();};
 var squaresInGrid = 16;
 var numSeedPolygons = 16;
-var numGridPolygons = 2000;
+var numGridPolygons = Math.ceil(Math.sqrt(doc.height * doc.width) / 4);
 
 function main(){
 	createGridSquares(squaresInGrid);

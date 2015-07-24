@@ -5,7 +5,7 @@ var JSX = JSX || {};
 JSX.color = {};
 
 JSX.color.GreyscaleColor = function(){};
-JSX.color.GreyscaleColor.prototype.randColor = function() {
+JSX.color.GreyscaleColor.prototype.getColor = function() {
 	var value = Math.random() * 255;
 	var randColor = new RGBColor();
 	randColor.red = value;
@@ -15,7 +15,7 @@ JSX.color.GreyscaleColor.prototype.randColor = function() {
 };
 
 JSX.color.Color = function(){};
-JSX.color.Color.prototype.randColor = function(){
+JSX.color.Color.prototype.getColor = function(){
 	var randColor = new RGBColor();
 	randColor.red = Math.random() * 255;
 	randColor.green = Math.random() * 255;
@@ -51,7 +51,7 @@ JSX.color.MonochromaticColor.prototype.colorFromBrightness = function(brightness
 	};
 	return color;
 };
-JSX.color.MonochromaticColor.prototype.randColor = function() {
+JSX.color.MonochromaticColor.prototype.getColor = function() {
 	return this.colorFromBrightness(JSX.math.random.randInt(0, 255));
 };
 
@@ -74,6 +74,6 @@ JSX.color.Palette = function(palette){
 		};
 	}
 }
-JSX.color.Palette.prototype.randColor = function() {
-	return JSX.math.random.randElement(this.palette).randColor();
+JSX.color.Palette.prototype.getColor = function() {
+	return JSX.math.random.randElement(this.palette).getColor();
 };
