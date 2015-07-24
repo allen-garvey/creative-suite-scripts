@@ -1,3 +1,4 @@
+#include lib/index.jsx
 /*
 * Creates starburst around the center of the document
 * Sizing doesn't work correctly on new artboard for some reason
@@ -16,6 +17,17 @@ function createStarburst(radius, numPoints){
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
 		var xCoord = parametricCircleX(centerPoint[0], radius, radDegreesFromOrigin);
 		var yCoord = parametricCircleY(centerPoint[1], radius, radDegreesFromOrigin);
+		drawLine([centerPoint, [xCoord, yCoord]]);
+	}
+}
+function createIrregularStarburst(radius, numPoints){
+	var centerPoint = [doc.width / 2, -1 * doc.height / 2];
+	var arcRadLength = 2 / numPoints;
+	for (var i = 0; i < numPoints; i++) {
+		var randRadius = radius * Math.random();
+		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
+		var xCoord = parametricCircleX(centerPoint[0], randRadius, radDegreesFromOrigin);
+		var yCoord = parametricCircleY(centerPoint[1], randRadius, radDegreesFromOrigin);
 		drawLine([centerPoint, [xCoord, yCoord]]);
 	}
 }
@@ -41,8 +53,15 @@ function parametricCircleY(originY, radius, radDegrees){
 function drawLine(pointsArray){
 	var line = doc.pathItems.add();
 	line.stroked = true;
+	line.strokeColor = color.getColor();
 	line.closed = true;
 	line.setEntirePath(pointsArray);
 }
 
-createStarburst(300, 65);
+/*
+* Main app
+*/
+var color = new JSX.color.Color();
+createIrregularStarburst(400, 100);
+
+
