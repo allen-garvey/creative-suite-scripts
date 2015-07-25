@@ -20,6 +20,11 @@ JSX.math.random.randInt = function(min, max) {
 		max = min;
 		min = 0;
 	}
+	if(min > max){
+		var temp = min;
+		min = max;
+		max = temp;
+	}
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
