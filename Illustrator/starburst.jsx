@@ -7,27 +7,19 @@
 * Draws starburst from center of the document
 * numPoints is the number of lines in the starburst
 */
-function createStarburst(radius, numPoints){
-	var centerPoint = [JSX.doc.width / 2, -1 * JSX.doc.height / 2];
+function createStarburst(radius, numPoints, radiusTransformFunc){
+	var centerPoint = JSX.vector.centerPoint();
 	var arcRadLength = 2 / numPoints;
+	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
 	for (var i = 0; i < numPoints; i++) {
+		var tRadius = radiusTransformFunc(radius);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
-		var xCoord = parametricCircleX(centerPoint[0], radius, radDegreesFromOrigin);
-		var yCoord = parametricCircleY(centerPoint[1], radius, radDegreesFromOrigin);
+		var xCoord = parametricCircleX(centerPoint[0], tRadius, radDegreesFromOrigin);
+		var yCoord = parametricCircleY(centerPoint[1], tRadius, radDegreesFromOrigin);
 		drawLine([centerPoint, [xCoord, yCoord]]);
 	}
 }
-function createIrregularStarburst(radius, numPoints){
-	var centerPoint = [JSX.doc.width / 2, -1 * JSX.doc.height / 2];
-	var arcRadLength = 2 / numPoints;
-	for (var i = 0; i < numPoints; i++) {
-		var randRadius = radius * Math.random();
-		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
-		var xCoord = parametricCircleX(centerPoint[0], randRadius, radDegreesFromOrigin);
-		var yCoord = parametricCircleY(centerPoint[1], randRadius, radDegreesFromOrigin);
-		drawLine([centerPoint, [xCoord, yCoord]]);
-	}
-}
+
 
 /*
 * Calculates the x point on a circle using parametric equation for circle
@@ -59,6 +51,6 @@ function drawLine(pointsArray){
 * Main app
 */
 var color = new JSX.color.Color();
-createIrregularStarburst(400, 100);
+createStarburst(400, 100, function(radius, i){return radius * Math.random();});
 
 
