@@ -1,10 +1,7 @@
 #include lib/index.jsx
 /*
 * Creates a fill of random polygons inside artboard
-* Sizing doesn't work correctly on new artboard for some reason
 */
-//creates new document if not already open
-var doc = app.documents.length > 0 ? app.activeDocument : app.documents.add(DocumentColorSpace.RGB, 512, 512);
 
 /*
 * Covers the artboard in squares like a grid based on the integer number specified
@@ -22,8 +19,8 @@ function createGridSquares(numSquares){
 		numRows = 2;
 		numCols = numSquares / numRows;
 	}
-	var xOffset = doc.width / numCols;
-	var yOffset = doc.height / numRows;
+	var xOffset = JSX.doc.width / numCols;
+	var yOffset = JSX.doc.height / numRows;
 	for (var i = 0; i < numRows; i++) {
 		var yStart = yOffset * i * -1;
 		for (var j = 0; j < numCols; j++) {
@@ -41,7 +38,7 @@ function createGridSquares(numSquares){
 * e.g. pointsArray = [[1, 2],[2,4 ],[5, 5]]; where [x, y]
 */
 function createPolygon(pointsArray){
-	var line = doc.pathItems.add();
+	var line = JSX.doc.pathItems.add();
 	line.stroked = false;
 	line.closed = true;
 	line.setEntirePath(pointsArray);
@@ -59,7 +56,7 @@ function createRandomPointsArray(minLength, maxLength){
 	var sides = JSX.math.random.randInt(minLength, maxLength);
 	var pointsArray = [];
 	for (var i = 0; i < sides; i++) {
-		pointsArray.push([doc.width * Math.random(), doc.height * Math.random() * -1]);
+		pointsArray.push([JSX.doc.width * Math.random(), JSX.doc.height * Math.random() * -1]);
 	};
 
 	return pointsArray;
@@ -106,7 +103,7 @@ var masterColor = new JSX.color.Palette();
 var colorFunc = function(){return masterColor.getColor();};
 var squaresInGrid = 16;
 var numSeedPolygons = 16;
-var numGridPolygons = Math.ceil(Math.sqrt(doc.height * doc.width) / 4);
+var numGridPolygons = Math.ceil(Math.sqrt(JSX.doc.height * JSX.doc.width) / 4);
 
 function main(){
 	createGridSquares(squaresInGrid);
