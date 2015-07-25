@@ -12,7 +12,7 @@ function createStarburst(radius, numPoints, radiusTransformFunc){
 	var arcRadLength = 2 / numPoints;
 	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
 	for (var i = 0; i < numPoints; i++) {
-		var tRadius = radiusTransformFunc(radius);
+		var tRadius = radiusTransformFunc(radius, i);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
 		var xCoord = parametricCircleX(centerPoint[0], tRadius, radDegreesFromOrigin);
 		var yCoord = parametricCircleY(centerPoint[1], tRadius, radDegreesFromOrigin);
