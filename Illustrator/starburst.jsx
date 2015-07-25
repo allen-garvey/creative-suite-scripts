@@ -14,10 +14,14 @@ function createStarburst(radius, numPoints, radiusTransformFunc){
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
-		var xCoord = parametricCircleX(centerPoint[0], tRadius, radDegreesFromOrigin);
-		var yCoord = parametricCircleY(centerPoint[1], tRadius, radDegreesFromOrigin);
-		drawLine([centerPoint, [xCoord, yCoord]]);
+		drawLine([centerPoint, parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin)]);
 	}
+}
+
+function parametricCirclePoint(centerPoint, radius, radDegrees){
+	var xCoord = parametricCircleX(centerPoint[0], radius, radDegrees);
+	var yCoord = parametricCircleY(centerPoint[1], radius, radDegrees);
+	return [xCoord, yCoord];
 }
 
 
