@@ -7,14 +7,29 @@
 * Draws starburst from center of the document
 * numPoints is the number of lines in the starburst
 */
-function createStarburst(radius, numPoints, radiusTransformFunc){
-	var centerPoint = JSX.vector.centerPoint();
+function createStarburst(radius, numPoints, radiusTransformFunc, centerPoint){
+	centerPoint = centerPoint ? centerPoint : JSX.vector.centerPoint();
 	var arcRadLength = 2 / numPoints;
 	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
 		drawLine([centerPoint, parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin)]);
+	}
+}
+
+function createFractalStarburst(radius, numPoints, radiusTransformFunc){
+	var centerPoint = JSX.vector.centerPoint();
+	var arcRadLength = 2 / numPoints;
+	var fractalRadius = Math.floor(Math.sqrt(radius));
+	var fractalPoints = Math.floor(Math.sqrt(numPoints));
+	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
+	for (var i = 0; i < numPoints; i++) {
+		var tRadius = radiusTransformFunc(radius, i);
+		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
+		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin);
+		drawLine([centerPoint, circleApexPoint]);
+		createStarburst(fractalRadius, fractalPoints, function(radius, i){return Math.random() * radius}, circleApexPoint);
 	}
 }
 
@@ -101,5 +116,6 @@ function drawPath(pointsArray){
 */
 var color = new JSX.color.Palette();
 // createStarburst(400, 100, function(radius, i){return radius * Math.random();});
-createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
+// createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
+createFractalStarburst(400, 32, function(radius, i){return radius * Math.random();});
 
