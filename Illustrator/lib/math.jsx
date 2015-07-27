@@ -43,3 +43,26 @@ JSX.math.random.powLawRandInt = function(pow){
 JSX.math.isSquareOfInteger = function(num){
 	return Math.sqrt(num) % 1 === 0;
 }
+
+/*
+* Returns array of Fibonacci numbers of length specified
+* omits 0 and 1 at beginning and starts at second 1
+*/
+JSX.math.fibArray = function(len){
+	if(len < 1){
+		return [0];
+	}
+	else if(len === 1){
+		return [1];
+	}
+	else if(len === 2){
+		return [1, 2];
+	}
+	var fibs = [1, 2];
+	for (var i = 2; i < len; i++) {
+		var next = fibs[i - 1] + fibs[i - 2];
+		fibs.push(next);
+	};
+
+	return fibs;
+}
