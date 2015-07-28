@@ -4,6 +4,80 @@
 var JSX = JSX || {};
 JSX.color = {};
 
+/*
+* takes rgb object (adobe color not JSX.color.Color object)
+* converts object {red: [0-255], blue: [0-255], green: [0-255]}
+* returns object {hue: [0-360] (degrees), saturation: [0-1] (percent), brightness: [0-1](percent)}
+* formula from: http://www.rapidtables.com/convert/color/rgb-to-hsl.htm
+*/
+JSX.color.rgbToHSL = function(rgbColor){
+	return {
+		'hue': JSX.color.hue(rgbColor),
+		'saturation': JSX.color.saturation(rgbColor),
+		'lightness': JSX.color.lightness(rgbColor)
+	};
+}
+/*
+* takes object {hue: [0-360] (degrees), saturation: [0-1] (percent), brightness: [0-1](percent)}
+* returns object {red: [0-255], blue: [0-255], green: [0-255]}
+* formula from: https://en.wikipedia.org/wiki/HSL_and_HSV#From_HSL
+*/
+JSX.color.hslToRGB = function(hslColor){
+	var c = (1 - Math.abs(2 * hslColor.lightness - 1)) * hslColor.saturation;
+	var x = c * (1 - Math.abs((hslColor.hue / 60) % 2 - 1));
+	var m = hslColor.lightness - (c / 2);
+
+	var cFactor;
+	if(hslColor.hue < 60 || hslColor.hue === 360){
+		cFactor = {'r': c, 'g': x, 'b': 0};
+	}
+	else if(hslColor.hue < 120){
+		cFactor = {'r': x, 'g': c, 'b': 0};
+	}
+	else if(hslColor.hue < 180){
+		cFactor = {'r': 0, 'g': c, 'b': x};
+	}
+	else if(hslColor.hue < 240){
+		cFactor = {'r': 0, 'g': x, 'b': c};
+	}
+	else if(hslColor.hue < 300){
+		cFactor = {'r': x, 'g': 0, 'b': c};
+	}
+	else{
+		cFactor = {'r': c, 'g': 0, 'b': x};
+	}
+	return {'red': Math.floor(255 * (cFactor.r + m)), 'green': Math.floor(255 * (cFactor.g + m)), 'blue': Math.floor(255 * (cFactor.b + m))};	
+
+}
+
+
+JSX.color.hue = function(rgbColor){
+	var colorMinMax = JSX.array.minMax([rgbColor.red, rgbColor.green, rgbColor.blue]);
+	var colorDelta = colorMinMax.max - colorMinMax.min;
+	if(colorDelta <= 0){
+		return 0;
+	}
+	if(colorMinMax.max === rgbColor.green){
+		return 60 * (((rgbColor.blue - rgbColor.red) / colorDelta) + 2);
+	}
+	else if(colorMinMax.max === rgbColor.blue){
+		return 60 * (((rgbColor.red - rgbColor.green) / colorDelta) + 4);
+	}
+	return 60 * (((rgbColor.green - rgbColor.blue) / colorDelta) % 6);
+}
+JSX.color.saturation = function(rgbColor){
+	var colorMinMax = JSX.array.minMax([rgbColor.red, rgbColor.green, rgbColor.blue]);
+	var colorDelta = colorMinMax.max - colorMinMax.min;
+	if(colorDelta <= 0){
+		return 0;
+	}
+	return colorDelta / ((1 - Math.abs(2 * JSX.color.lightness(rgbColor) - 1)) * 255);
+}
+JSX.color.lightness = function(rgbColor){
+	var colorMinMax = JSX.array.minMax([rgbColor.red, rgbColor.green, rgbColor.blue]);
+	return (colorMinMax.max + colorMinMax.min) / (2 * 255);
+}
+
 JSX.color.GreyscaleColor = function(){};
 JSX.color.GreyscaleColor.prototype.getColor = function() {
 	var value = Math.random() * 255;
