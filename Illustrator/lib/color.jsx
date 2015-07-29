@@ -46,8 +46,13 @@ JSX.color.hslToRGB = function(hslColor){
 	else{
 		cFactor = {'r': c, 'g': 0, 'b': x};
 	}
-	return {'red': Math.round(255 * (cFactor.r + m)), 'green': Math.round(255 * (cFactor.g + m)), 'blue': Math.round(255 * (cFactor.b + m))};	
-
+	//sometimes error about value being below the minimum allowed value
+	var colors =  {'red': Math.round(255 * (cFactor.r + m)), 'green': Math.round(255 * (cFactor.g + m)), 'blue': Math.round(255 * (cFactor.b + m))};
+	var color = new RGBColor();
+	color.red = colors.red;
+	color.green = colors.green;
+	color.blue = colors.blue;	
+	return color;
 }
 
 
