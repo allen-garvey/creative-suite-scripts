@@ -18,8 +18,8 @@ JSX.color.rgbToHSL = function(rgbColor){
 	};
 }
 /*
-* takes object {hue: [0-360] (degrees), saturation: [0-1] (percent), brightness: [0-1](percent)}
-* returns object {red: [0-255], blue: [0-255], green: [0-255]}
+* @param hslColor = object {hue: 0-360, saturation: 0-1, brightness: 0-1}
+* @returns object {red: 0-255, blue: 0-255, green: 0-255}
 * formula from: https://en.wikipedia.org/wiki/HSL_and_HSV#From_HSL
 */
 JSX.color.hslToRGB = function(hslColor){
@@ -46,7 +46,7 @@ JSX.color.hslToRGB = function(hslColor){
 	else{
 		cFactor = {'r': c, 'g': 0, 'b': x};
 	}
-	return {'red': Math.floor(255 * (cFactor.r + m)), 'green': Math.floor(255 * (cFactor.g + m)), 'blue': Math.floor(255 * (cFactor.b + m))};	
+	return {'red': Math.round(255 * (cFactor.r + m)), 'green': Math.round(255 * (cFactor.g + m)), 'blue': Math.round(255 * (cFactor.b + m))};	
 
 }
 
