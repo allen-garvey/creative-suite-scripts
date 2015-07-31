@@ -66,3 +66,32 @@ JSX.math.fibArray = function(len){
 
 	return fibs;
 }
+
+/*
+* Function to calculate coordinates on a circle diameter
+* angleRadians is the angle measurement in radians (e.g. 2pi)
+* returns object {y, x, point} where point = [x, y]
+*/
+JSX.math.parametricCirclePoint = function(centerPoint, radius, angleRadians){
+	/*
+	* Calculates the x point on a circle using parametric equation for circle
+	* originX is x coordinate for circle center, 
+	* angleRadians is the angle in radians
+	*/
+	var parametricCircleX = function(originX, radius, angleRadians){
+		return originX + radius * Math.cos(angleRadians);
+	}
+
+	/*
+	* Calculates the y point on a circle using parametric equation for circle
+	* originY is y coordinate for circle center, 
+	* angleRadians is the angle in radians
+	*/
+	var parametricCircleY = function(originY, radius, angleRadians){
+		return originY + radius * Math.sin(angleRadians);
+	}
+
+	var xCoord = parametricCircleX(centerPoint[0], radius, angleRadians);
+	var yCoord = parametricCircleY(centerPoint[1], radius, angleRadians);
+	return {'x' : xCoord, 'y': yCoord, 'point' : [xCoord, yCoord]};
+}
