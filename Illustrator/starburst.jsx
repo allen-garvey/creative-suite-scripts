@@ -8,7 +8,7 @@
 * numPoints is the number of lines in the starburst
 */
 function createStarburst(radius, numPoints, radiusTransformFunc, centerPoint){
-	centerPoint = centerPoint ? centerPoint : JSX.vector.centerPoint();
+	centerPoint = centerPoint ? centerPoint : JSX.vector.centerPoint().point;
 	var arcRadLength = 2 / numPoints;
 	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
 	for (var i = 0; i < numPoints; i++) {
@@ -19,7 +19,7 @@ function createStarburst(radius, numPoints, radiusTransformFunc, centerPoint){
 }
 
 function createFractalStarburst(radius, numPoints, radiusTransformFunc){
-	var centerPoint = JSX.vector.centerPoint();
+	var centerPoint = JSX.vector.centerPoint().point;
 	var arcRadLength = 2 / numPoints;
 	var fractalRadius = Math.floor(Math.sqrt(radius));
 	var fractalPoints = Math.floor(Math.sqrt(numPoints));
@@ -34,7 +34,7 @@ function createFractalStarburst(radius, numPoints, radiusTransformFunc){
 }
 
 function createSquarePinwheel(radius, numPoints, squareWidth, radiusTransformFunc){
-	var centerPoint = JSX.vector.centerPoint();
+	var centerPoint = JSX.vector.centerPoint().point;
 	var RADIANS_IN_CIRCLE = 2;
 	var arcRadLength = RADIANS_IN_CIRCLE / numPoints;
 	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
@@ -50,7 +50,7 @@ function createSquarePinwheel(radius, numPoints, squareWidth, radiusTransformFun
 }
 
 function createTrianglePinwheel(radius, numPoints, squareWidth, radiusTransformFunc){
-	var centerPoint = JSX.vector.centerPoint();
+	var centerPoint = JSX.vector.centerPoint().point;
 	var RADIANS_IN_CIRCLE = 2;
 	var arcRadLength = RADIANS_IN_CIRCLE / numPoints;
 	radiusTransformFunc = radiusTransformFunc ? radiusTransformFunc : function(radius, i){return radius;};
@@ -111,11 +111,88 @@ function drawPath(pointsArray){
 	line.setEntirePath(pointsArray);
 }
 
+function expandingCirclesPerspective(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num);
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var circle = JSX.doc.pathItems.ellipse(centerPoint[1], centerPoint[0], r, r, false, true);
+		circle.stroked = false;
+		circle.fillColor = color.getColor();
+	});
+}
+
+function expandingCircles2(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num);
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var x = centerPoint[0] - 2 * r;
+		var y = centerPoint[1] + 2 * r;
+		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
+		circle.stroked = false;
+		circle.fillColor = color.getColor();
+	});
+}
+
+function expandingCircles3(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num);
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var x = centerPoint[0] - r;
+		var y = centerPoint[1] + r;
+		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
+		circle.stroked = false;
+		circle.fillColor = color.getColor();
+	});
+}
+
+function expandingCircles4(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num);
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var x = centerPoint[0] - r;
+		var y = centerPoint[1] +  2 * r;
+		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
+		circle.stroked = false;
+		circle.fillColor = color.getColor();
+	});
+}
+
+function expandingCirclesStroke(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num);
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var x = centerPoint[0] - 0.5 * r;
+		var y = centerPoint[1] + 0.5 * r;
+		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
+		circle.stroked = true;
+		circle.fillColor = new NoColor();
+	});
+}
+
+function expandingCircles(num){
+	var centerPoint = JSX.vector.centerPoint();
+	var radii = JSX.math.fibArray(num).reverse();
+	JSX.array.each(radii, function(r){
+		r *= 10;
+		var x = centerPoint.x - 0.5 * r;
+		var y = centerPoint.y + 0.5 * r;
+		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
+		circle.stroked = false;
+		circle.fillColor = color.getColor();
+	});
+}
+
 /*
 * Main app
 */
 var color = new JSX.color.Palette();
 // createStarburst(400, 100, function(radius, i){return radius * Math.random();});
 // createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
+expandingCircles(10);
 createFractalStarburst(400, 32, function(radius, i){return radius * Math.random();});
 
