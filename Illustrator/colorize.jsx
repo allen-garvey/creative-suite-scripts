@@ -5,8 +5,7 @@
 */
 
 var color = new JSX.color.Palette();
-JSX.array.each(JSX.doc.pathItems, function(item, i){
-	if(!JSX.isItemLocked(item)){
-		item.fillColor = color.getColor();
-	}
+
+JSX.vector.foreachPathItem(function(item, i){
+	item.fillColor = color.getColor();
 });

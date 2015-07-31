@@ -6,10 +6,8 @@
 
 var hue = JSX.color.rgbToHSL(new JSX.color.Color().getColor()).hue;
 
-JSX.array.each(JSX.doc.pathItems, function(item, i){
-	if(!JSX.isItemLocked(item)){
-		var hsl = JSX.color.rgbToHSL(item.fillColor);
-		hsl.hue = hue;
-		item.fillColor = JSX.color.hslToRGB(hsl);
-	}
+JSX.vector.foreachPathItem(function(item, i){
+	var hsl = JSX.color.rgbToHSL(item.fillColor);
+	hsl.hue = hue;
+	item.fillColor = JSX.color.hslToRGB(hsl);
 });
