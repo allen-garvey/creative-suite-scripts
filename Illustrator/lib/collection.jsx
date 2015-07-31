@@ -21,7 +21,7 @@ JSX.array.each = function(lvArray, func){
 * Returns object with the min and maximum values in an array
 */
 JSX.array.minMax = function(lvArray){
-	lvArray = lvArray.sort();
+	lvArray = lvArray.sort(function(a, b){return a - b;});
 	return {'min': lvArray[0], 'max' : lvArray[lvArray.length - 1]};
 }
 
