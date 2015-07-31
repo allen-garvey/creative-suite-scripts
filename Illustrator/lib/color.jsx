@@ -58,21 +58,28 @@ JSX.color.hslToRGB = function(hslColor){
 
 JSX.color.hue = function(rgbColor){
 	var colorMinMax = JSX.array.minMax([rgbColor.red, rgbColor.green, rgbColor.blue]);
-	var colorDelta = colorMinMax.max - colorMinMax.min;
+	var colorDelta = (colorMinMax.max - colorMinMax.min);
+	var hue;
 	if(colorDelta <= 0){
 		return 0;
 	}
 	if(colorMinMax.max === rgbColor.green){
-		return 60 * (((rgbColor.blue - rgbColor.red) / colorDelta) + 2);
+		hue = 60 * (((rgbColor.blue - rgbColor.red) / colorDelta) + 2);
 	}
 	else if(colorMinMax.max === rgbColor.blue){
-		return 60 * (((rgbColor.red - rgbColor.green) / colorDelta) + 4);
+		hue = 60 * (((rgbColor.red - rgbColor.green) / colorDelta) + 4);
 	}
-	return 60 * (((rgbColor.green - rgbColor.blue) / colorDelta) % 6);
+	else{
+		hue = 60 * (((rgbColor.green - rgbColor.blue) / colorDelta) % 6);
+	}
+	while(hue < 0){
+		hue += 360;
+	}
+	return hue;
 }
 JSX.color.saturation = function(rgbColor){
 	var colorMinMax = JSX.array.minMax([rgbColor.red, rgbColor.green, rgbColor.blue]);
-	var colorDelta = colorMinMax.max - colorMinMax.min;
+	var colorDelta = (colorMinMax.max - colorMinMax.min);
 	if(colorDelta <= 0){
 		return 0;
 	}
