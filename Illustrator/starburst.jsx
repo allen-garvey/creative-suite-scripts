@@ -161,19 +161,6 @@ function expandingCircles4(num){
 	});
 }
 
-function expandingCirclesStroke(num){
-	var centerPoint = JSX.vector.centerPoint();
-	var radii = JSX.math.fibArray(num);
-	JSX.array.each(radii, function(r){
-		r *= 10;
-		var x = centerPoint[0] - 0.5 * r;
-		var y = centerPoint[1] + 0.5 * r;
-		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
-		circle.stroked = true;
-		circle.fillColor = new NoColor();
-	});
-}
-
 function expandingCircles(num){
 	var centerPoint = JSX.vector.centerPoint();
 	var radii = JSX.math.fibArray(num).reverse();
