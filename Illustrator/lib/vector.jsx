@@ -24,3 +24,17 @@ JSX.vector.centerPoint = function(){
 	var y = JSX.doc.height / 2 * -1;
 	return {'x' : x, 'y' : y, 'point' : [x, y]};
 }
+
+/**
+ * convenience function to perform function on each unlocked pathItem in document
+ * options {'doc' : doc} - the document the pathItems are coming from, the default is JSX.doc
+ */
+JSX.vector.foreachPathItem = function(func, options){
+	var doc = options && options.doc ? options.doc : JSX.doc;
+
+	JSX.array.each(doc.pathItems, function(item, i){
+		if(!JSX.isItemLocked(item)){
+			func(item, i);
+		}
+	});
+};
