@@ -14,7 +14,7 @@ function createStarburst(radius, numPoints, radiusTransformFunc, centerPoint){
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
-		drawLine([centerPoint, parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin)]);
+		drawLine([centerPoint, parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin).point]);
 	}
 }
 
@@ -27,7 +27,7 @@ function createFractalStarburst(radius, numPoints, radiusTransformFunc){
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radDegreesFromOrigin = arcRadLength * i * Math.PI;
-		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin);
+		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radDegreesFromOrigin).point;
 		drawLine([centerPoint, circleApexPoint]);
 		createStarburst(fractalRadius, fractalPoints, function(radius, i){return Math.random() * radius}, circleApexPoint);
 	}
@@ -41,11 +41,11 @@ function createSquarePinwheel(radius, numPoints, squareWidth, radiusTransformFun
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radsFromOrigin = arcRadLength * i;
-		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radsFromOrigin * Math.PI);
+		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radsFromOrigin * Math.PI).point;
 		drawPath([centerPoint, 
 			circleApexPoint, 
-			parametricCirclePoint(circleApexPoint, squareWidth, (radsFromOrigin - .5) * Math.PI),
-			parametricCirclePoint(centerPoint, squareWidth, (radsFromOrigin - .5) * Math.PI)]);
+			parametricCirclePoint(circleApexPoint, squareWidth, (radsFromOrigin - .5) * Math.PI).point,
+			parametricCirclePoint(centerPoint, squareWidth, (radsFromOrigin - .5) * Math.PI).point]);
 	}
 }
 
@@ -57,8 +57,8 @@ function createTrianglePinwheel(radius, numPoints, squareWidth, radiusTransformF
 	for (var i = 0; i < numPoints; i++) {
 		var tRadius = radiusTransformFunc(radius, i);
 		var radsFromOrigin = arcRadLength * i;
-		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radsFromOrigin * Math.PI);
-		var widthPoint = parametricCirclePoint(centerPoint, squareWidth, (radsFromOrigin - .5) * Math.PI);
+		var circleApexPoint = parametricCirclePoint(centerPoint, tRadius, radsFromOrigin * Math.PI).point;
+		var widthPoint = parametricCirclePoint(centerPoint, squareWidth, (radsFromOrigin - .5) * Math.PI).point;
 		drawPath([centerPoint, 
 			circleApexPoint,
 			[JSX.math.random.randInt(widthPoint[0], circleApexPoint[0]), JSX.math.random.randInt(widthPoint[1], circleApexPoint[1])]
@@ -68,33 +68,34 @@ function createTrianglePinwheel(radius, numPoints, squareWidth, radiusTransformF
 
 
 /*
-* convenience function to calculate coordinates on a circle
-* returns single point [x, y] created by combining parametricCircleX and parametricCircleY functions
+* Function to calculate coordinates on a circle diameter
+* angleRadians is the angle measurement in radians (e.g. 2pi)
+* returns object {y, x, point} where point = [x, y]
 */
-function parametricCirclePoint(centerPoint, radius, radDegrees){
-	var xCoord = parametricCircleX(centerPoint[0], radius, radDegrees);
-	var yCoord = parametricCircleY(centerPoint[1], radius, radDegrees);
-	return [xCoord, yCoord];
+function parametricCirclePoint(centerPoint, radius, angleRadians){
+	/*
+	* Calculates the x point on a circle using parametric equation for circle
+	* originX is x coordinate for circle center, 
+	* angleRadians is the angle in radians
+	*/
+	var parametricCircleX = function(originX, radius, angleRadians){
+		return originX + radius * Math.cos(angleRadians);
+	}
+
+	/*
+	* Calculates the y point on a circle using parametric equation for circle
+	* originY is y coordinate for circle center, 
+	* angleRadians is the angle in radians
+	*/
+	var parametricCircleY = function(originY, radius, angleRadians){
+		return originY + radius * Math.sin(angleRadians);
+	}
+
+	var xCoord = parametricCircleX(centerPoint[0], radius, angleRadians);
+	var yCoord = parametricCircleY(centerPoint[1], radius, angleRadians);
+	return {'x' : xCoord, 'y': yCoord, 'point' : [xCoord, yCoord]};
 }
 
-
-/*
-* Calculates the x point on a circle using parametric equation for circle
-* originX is x coordinate for circle center, 
-* radDegrees is the angle in radians
-*/
-function parametricCircleX(originX, radius, radDegrees){
-	return originX + radius * Math.cos(radDegrees);
-}
-
-/*
-* Calculates the y point on a circle using parametric equation for circle
-* originY is y coordinate for circle center, 
-* radDegrees is the angle in radians
-*/
-function parametricCircleY(originY, radius, radDegrees){
-	return originY + radius * Math.sin(radDegrees);
-}
 
 function drawLine(pointsArray){
 	var line = JSX.doc.pathItems.add();
@@ -179,7 +180,7 @@ function expandingCircles(num){
 */
 var color = new JSX.color.Palette();
 // createStarburst(400, 100, function(radius, i){return radius * Math.random();});
-// createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
+createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
 expandingCircles(10);
 createFractalStarburst(400, 32, function(radius, i){return radius * Math.random();});
 
