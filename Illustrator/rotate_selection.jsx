@@ -44,7 +44,7 @@ function drawRotation(centerPoint, pointsInfo){
 }
 
 function drawPath(pointsArray){
-	var line = JSX.doc.pathItems.add();
+	var line = currentLayer.pathItems.add();
 	line.stroked = false;
 	line.fillColor = color.getColor();
 	line.closed = true;
@@ -66,10 +66,11 @@ function lowestPointIndex(points){
 //total number of rotated objects including the original, so that one less than number of numRotations is drawn
 var numRotations = 5;
 var color = new JSX.color.Palette();
-
+var currentLayer; //required to draw on same layer in case top layer is hidden or locked
 var selectedItems = JSX.vector.selectedPathItems();
 if(selectedItems.length > 0){
 	JSX.array.each(selectedItems, function(item){
+		currentLayer = item.layer;
 		rotateItem(item);
 	});
 }
