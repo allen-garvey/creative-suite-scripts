@@ -103,7 +103,7 @@ JSX.math.parametricCirclePoint = function(centerPoint, radius, angleRadians){
 * @parameter circlePoint : (JSX.vector.Point)  a point on the circle's circumference
 */
 JSX.math.parametricCircleAngle = function(centerPoint, circlePoint){
-	var angleRads = -1 * Math.atan2(circlePoint.y - centerPoint.y, circlePoint.x - centerPoint.x) + 0.5 * Math.PI;
+	var angleRads = Math.atan2(circlePoint.y - centerPoint.y, circlePoint.x - centerPoint.x);
 	if(angleRads < 0){
 		angleRads = angleRads + 2 * Math.PI;
 	}
