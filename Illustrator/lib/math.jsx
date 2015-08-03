@@ -93,5 +93,5 @@ JSX.math.parametricCirclePoint = function(centerPoint, radius, angleRadians){
 
 	var xCoord = parametricCircleX(centerPoint[0], radius, angleRadians);
 	var yCoord = parametricCircleY(centerPoint[1], radius, angleRadians);
-	return {'x' : xCoord, 'y': yCoord, 'point' : [xCoord, yCoord]};
+	return new JSX.vector.Point(xCoord, yCoord);
 }

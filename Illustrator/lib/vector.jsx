@@ -22,7 +22,7 @@ JSX.vector.isPointInArray = function(point, pointsArray){
 JSX.vector.centerPoint = function(){
 	var x = JSX.doc.width / 2;
 	var y = JSX.doc.height / 2 * -1;
-	return {'x' : x, 'y' : y, 'point' : [x, y]};
+	return new JSX.vector.Point(x, y);
 }
 
 /**
@@ -38,3 +38,16 @@ JSX.vector.foreachPathItem = function(func, options){
 		}
 	});
 };
+
+/*
+* Point class
+* Acts as container for point information
+* x and y are floats for the x and y coordinates respectively
+*/
+JSX.vector.Point = function(x, y){
+	this.x = x;
+	this.y = y;
+	this.point = [x, y];
+}
+
+
