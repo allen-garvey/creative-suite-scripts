@@ -2,12 +2,16 @@
 /*
 * Rotates selected pathItem to create pinwheel like effect
 * rotates around lowest point
+* only works with straight line objects for now - does not replicate curves
 */
 
 function rotateItem(pathItem){
 	var points = [];
 	JSX.array.each(pathItem.pathPoints, function(item){
-		points.push(new JSX.vector.Point(item.anchor));
+		var point = new JSX.vector.Point(item.anchor);
+		point.leftDirection = item.leftDirection;
+		point.rightDirection = item.rightDirection;
+		points.push(point);
 	});
 	var lowestIndex = lowestPointIndex(points);
 	var centerPoint = points[lowestIndex];
@@ -16,7 +20,9 @@ function rotateItem(pathItem){
 		pointsInfo.push({
 			'point' : item,
 			'distance' : JSX.math.distance(centerPoint, item),
-			'angleRad' : JSX.math.parametricCircleAngle(centerPoint, item)
+			'angleRad' : JSX.math.parametricCircleAngle(centerPoint, item),
+			'rightDirection' : item.rightDirection,
+			'leftDirection' : item.leftDirection
 		});
 	});
 	drawRotation(centerPoint, pointsInfo);
@@ -29,14 +35,18 @@ function drawRotation(centerPoint, pointsInfo){
 		var radiansFromOrigin = arcRadLength * i * Math.PI;
 		JSX.array.each(pointsInfo, function(item){
 			//can't remove the center point since would disrupt path, so instead test and simply add it without doing any calculations
+			var point;
 			if(centerPoint.equals(item.point)){
-				pathPoints.push(centerPoint.point);
+				point = centerPoint;
 			}
 			else{
 				//if angle is to the left of the centerPoint, it should be negative
 				item.angleRad = item.angleRad > Math.PI ? item.angleRad - 2 * Math.PI : item.angleRad;
-				pathPoints.push(JSX.math.parametricCirclePoint(centerPoint.point, item.distance, radiansFromOrigin + item.angleRad).point);	
+				point = JSX.math.parametricCirclePoint(centerPoint.point, item.distance, radiansFromOrigin + item.angleRad);
+				point.leftDirection = item.leftDirection;
+				point.rightDirection = item.rightDirection;
 			}
+			pathPoints.push(point);	
 			
 		});
 		drawPath(pathPoints);
@@ -44,11 +54,17 @@ function drawRotation(centerPoint, pointsInfo){
 }
 
 function drawPath(pointsArray){
-	var line = currentLayer.pathItems.add();
-	line.stroked = false;
-	line.fillColor = color.getColor();
-	line.closed = true;
-	line.setEntirePath(pointsArray);
+	var pathItem = currentLayer.pathItems.add();
+	pathItem.stroked = false;
+	pathItem.fillColor = color.getColor();
+	pathItem.closed = true;
+	// JSX.array.each(pointsArray, function(item){
+	// 	var pathPoint = pathItem.pathPoints.add();
+	// 	pathPoint.anchor = item.point;
+	// 	pathPoint.leftDirection = item.leftDirection;
+	// 	pathPoint.rightDirection = item.rightDirection;
+	// });
+	pathItem.setEntirePath(pointsArray.map(function(item){return item.point;}));
 }
 //used to get index of lowest point in array to serve as center point
 function lowestPointIndex(points){
