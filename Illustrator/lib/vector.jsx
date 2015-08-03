@@ -17,11 +17,13 @@ JSX.vector.isPointInArray = function(point, pointsArray){
 }
 
 /**
- * Returns point in the center of the current document
+ * Returns point in the center of the document passed as an argument
+ * or the current doc if no arguments are supplied
  */
-JSX.vector.centerPoint = function(){
-	var x = JSX.doc.width / 2;
-	var y = JSX.doc.height / 2 * -1;
+JSX.vector.centerPoint = function(doc){
+	doc = doc || JSX.doc;
+	var x = doc.width / 2;
+	var y = doc.height / 2 * -1;
 	return new JSX.vector.Point(x, y);
 }
 
