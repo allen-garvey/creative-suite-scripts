@@ -16,6 +16,23 @@ JSX.vector.isPointInArray = function(point, pointsArray){
  	return false;
 }
 
+/*
+* returns an array of pathItems from the document that are currently selected
+* if no doc is given, the current document is used
+*/
+JSX.vector.selectedPathItems = function(doc){
+	doc = doc || JSX.doc;
+	var pathItems = [];
+
+	JSX.vector.foreachPathItem(function(item){
+		if(item.selected){
+			pathItems.push(item);
+		}
+	}, {'doc' : doc});
+
+	return pathItems;
+}
+
 /**
  * Returns point in the center of the document passed as an argument
  * or the current doc if no arguments are supplied
@@ -47,9 +64,17 @@ JSX.vector.foreachPathItem = function(func, options){
 * x and y are floats for the x and y coordinates respectively
 */
 JSX.vector.Point = function(x, y){
+	//allows creation of point from array of two numbers
+	if(Object.prototype.toString.call(x) === '[object Array]'){
+		y = x[1];
+		x = x[0];
+	}
 	this.x = x;
 	this.y = y;
 	this.point = [x, y];
+}
+JSX.vector.Point.prototype.equals = function(point){
+	return point.x === this.x && point.y === this.y;
 }
 
 
