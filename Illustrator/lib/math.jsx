@@ -95,3 +95,26 @@ JSX.math.parametricCirclePoint = function(centerPoint, radius, angleRadians){
 	var yCoord = parametricCircleY(centerPoint[1], radius, angleRadians);
 	return new JSX.vector.Point(xCoord, yCoord);
 }
+
+/*
+* @returns the angle in radians of a point on a circle between 0 and 2PI
+* angle is calculated clockwise with 0, positive y being the starting (0) point
+* @parameter centerPoint : (JSX.vector.Point)  center of circle 
+* @parameter circlePoint : (JSX.vector.Point)  a point on the circle's circumference
+*/
+JSX.math.parametricCircleAngle = function(centerPoint, circlePoint){
+	var angleRads = -1 * Math.atan2(circlePoint.y - centerPoint.y, circlePoint.x - centerPoint.x) + 0.5 * Math.PI;
+	if(angleRads < 0){
+		angleRads = angleRads + 2 * Math.PI;
+	}
+	return angleRads;
+}
+
+/*
+* @returns the distance between two points
+* @parameter p1 : (JSX.vector.Point)
+* @parameter p2 : (JSX.vector.Point)
+*/
+JSX.math.distance = function(p1, p2){
+	return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+}
