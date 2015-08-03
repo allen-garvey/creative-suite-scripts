@@ -25,3 +25,15 @@ JSX.array.minMax = function(lvArray){
 	return {'min': lvArray[0], 'max' : lvArray[lvArray.length - 1]};
 }
 
+/*
+* Adobe inexplicably removed the map function for some reason
+*/
+Array.prototype.map = Array.prototype.map || function(func) {
+	var newArray = [];
+	JSX.array.each(this, function(item, i){
+		newArray.push(func(item, i));
+	});
+	return newArray;
+};
+
+
