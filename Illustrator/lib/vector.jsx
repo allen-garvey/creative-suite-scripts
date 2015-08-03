@@ -52,7 +52,7 @@ JSX.vector.foreachPathItem = function(func, options){
 	var doc = options && options.doc ? options.doc : JSX.doc;
 
 	JSX.array.each(doc.pathItems, function(item, i){
-		if(!JSX.isItemLocked(item)){
+		if(!JSX.isItemLocked(item) && !JSX.isItemHidden(item)){
 			func(item, i);
 		}
 	});
