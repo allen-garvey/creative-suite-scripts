@@ -86,7 +86,7 @@ function expandingCirclesPerspective(num){
 	var radii = JSX.math.fibArray(num);
 	JSX.array.each(radii, function(r){
 		r *= 10;
-		var circle = JSX.doc.pathItems.ellipse(centerPoint[1], centerPoint[0], r, r, false, true);
+		var circle = JSX.doc.pathItems.ellipse(centerPoint.y, centerPoint.x, r, r, false, true);
 		circle.stroked = false;
 		circle.fillColor = color.getColor();
 	});
@@ -97,8 +97,8 @@ function expandingCircles2(num){
 	var radii = JSX.math.fibArray(num);
 	JSX.array.each(radii, function(r){
 		r *= 10;
-		var x = centerPoint[0] - 2 * r;
-		var y = centerPoint[1] + 2 * r;
+		var x = centerPoint.x - 2 * r;
+		var y = centerPoint.y + 2 * r;
 		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
 		circle.stroked = false;
 		circle.fillColor = color.getColor();
@@ -110,8 +110,8 @@ function expandingCircles3(num){
 	var radii = JSX.math.fibArray(num);
 	JSX.array.each(radii, function(r){
 		r *= 10;
-		var x = centerPoint[0] - r;
-		var y = centerPoint[1] + r;
+		var x = centerPoint.x - r;
+		var y = centerPoint.y + r;
 		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
 		circle.stroked = false;
 		circle.fillColor = color.getColor();
@@ -123,8 +123,8 @@ function expandingCircles4(num){
 	var radii = JSX.math.fibArray(num);
 	JSX.array.each(radii, function(r){
 		r *= 10;
-		var x = centerPoint[0] - r;
-		var y = centerPoint[1] +  2 * r;
+		var x = centerPoint.x - r;
+		var y = centerPoint.y +  2 * r;
 		var circle = JSX.doc.pathItems.ellipse(y, x, r, r, false, true);
 		circle.stroked = false;
 		circle.fillColor = color.getColor();
@@ -152,4 +152,5 @@ var color = new JSX.color.Palette();
 // createTrianglePinwheel(600, 5, 20, function(radius, i){return radius * Math.random();});
 expandingCircles(10);
 createFractalStarburst(400, 32, function(radius, i){return radius * Math.random();});
+expandingCircles2(10);
 
