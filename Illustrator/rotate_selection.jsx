@@ -30,7 +30,7 @@ function rotateItem(pathItem){
 
 function drawRotation(centerPoint, pointsInfo){
 	var arcRadLength = 2.0 / numRotations;
-	for (var i = 1; i < numRotations; i++) {
+	for (var i = 0; i < numRotations; i++) {
 		var pathPoints = [];
 		var radiansFromOrigin = arcRadLength * i * Math.PI;
 		JSX.array.each(pointsInfo, function(item){
