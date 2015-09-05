@@ -30,6 +30,6 @@ function stripe(rect_width, gutter){
 	var startingPoint = maxDimension * 0.25;
 
 	for (var i = 0; i < num_rect; i++) {
-		JSX.doc.pathItems.rectangle(0 + startingPoint, (i * total_stripe_width) - startingPoint, rect_width, diagonalMax);	
+		JSX.doc.pathItems.rectangle(startingPoint, (i * total_stripe_width) - startingPoint, rect_width, diagonalMax);	
 	};
 }
