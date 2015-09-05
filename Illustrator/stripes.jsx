@@ -21,10 +21,15 @@ stripe(rect_width, gutter);
 
 
 function stripe(rect_width, gutter){
+	//so stripes can be rotated vertically and still cover height
+	var maxDimension = JSX.doc.width >= JSX.doc.height ? JSX.doc.width : JSX.doc.height;
+	//so that the stripes can be rotated diagonally and still cover area
+	var diagonalMax = maxDimension * 1.5;
 	var total_stripe_width = rect_width + gutter;
-	var num_rect = Math.ceil(JSX.doc.width / total_stripe_width)
+	var num_rect = Math.ceil(diagonalMax / total_stripe_width)
+	var startingPoint = maxDimension * 0.25;
 
 	for (var i = 0; i < num_rect; i++) {
-		JSX.doc.pathItems.rectangle(0, i * total_stripe_width, rect_width, JSX.doc.height);	
+		JSX.doc.pathItems.rectangle(0 + startingPoint, (i * total_stripe_width) - startingPoint, rect_width, diagonalMax);	
 	};
 }
